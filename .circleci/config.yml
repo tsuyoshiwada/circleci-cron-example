@@ -1,0 +1,24 @@
+version: 2
+jobs:
+  greeting:
+    docker:
+      - image: debian:stretch
+    steps:
+      - checkout
+      - run: echo "Hello World"
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - greeting
+  nightly_echo:
+    triggers:
+      - schedule:
+          cron: "0 23 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - greeting
